@@ -22,7 +22,7 @@ inc_freq * count_freq(int fd)	{
 	int farr[256] ; //This array will calculate different characters and their frequency  using hashing
 	
 	for( i=0;i<256;i++){
-		farr[i]=0;	// Initialize frequency of every character to 0 
+		farr[i]=0;	// Initialize frequency of every character to 0 .
 	}	
 		
 
