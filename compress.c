@@ -1,14 +1,21 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+#include<sys/types.h>
+#include<sys/stat.h>
+
+#include<math.h>
+#include<string.h>
 #include<limits.h>
 #include<unistd.h>
 #include<fcntl.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<string.h>
-#include<stdlib.h>
-#include<stdio.h>
-#include<math.h>
 
-
+/* Funtions in this file */
+char binToChar(char *byte);
+void createfile(int fd, int fwd, int size);
+void compress1(int fd, int fwd);
+void compress2(int fd, int fwd);
+	
 /* Function to convert binary code to character */
 char binToChar(char *byte){
 	int i, sum = 0;
@@ -23,10 +30,8 @@ char binToChar(char *byte){
 	return ch;
 }
 
-
-
 /* Function to create new file i.e. the compressed file */
-void createfile(int fd, int fwd, int size)    {
+void createfile(int fd, int fwd, int size){
 	char ch, code;
 	int i = 0, j = 0, count = 1;
 	char byte[8];
@@ -57,7 +62,7 @@ void createfile(int fd, int fwd, int size)    {
 		}
 	}
 
-	//If the count of the byte is not equal to 8
+	// If the count of the byte is not equal to 8
 	if(count != 8)	{
 		while(count < 8)	{
 			byte[count] = '0';
@@ -71,7 +76,7 @@ void createfile(int fd, int fwd, int size)    {
 
 
 /* Function to compress the file using huffman algorithm */
-void compress1(int fd, int fwd)  {
+void compress1(int fd, int fwd){
 	char c;
 	/* If the file is already empty, no need to compress */
 	if(!read(fd, &c, 1))
@@ -144,12 +149,12 @@ void compress2(int fd, int fwd) {
 		dn[i].index = d.index;
 	}
 
-	//writing the unique character length in the file
+	// writing the unique character length in the file
 	write(fwd, &n, sizeof(int));
 
-	//writing the unique character array dictionary in the file;
+	// writing the unique character array dictionary in the file;
 	for(i = 0; i < n; i++)
-		write(fwd, dn + i, sizeof(dn[i]));		//writing the structure of unique dictionary in the file
+		write(fwd, dn + i, sizeof(dn[i]));		// writing the structure of unique dictionary in the file
 	
 	lseek(fd, 0, SEEK_SET);
 	ch[0] = '\0';
