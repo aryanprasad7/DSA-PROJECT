@@ -18,24 +18,36 @@ inc_freq * count_freq(int fd)	{
 	
 	//structure which stores the character as well as the frequency
 	inc_freq *arr = (inc_freq*)malloc(sizeof(inc_freq) * 150);
+	
+	int farr[256] ; //This array will calculate different characters and their frequency  using hashing
+	
+	for( i=0;i<256;i++){
+		farr[i]=0;	// Initialize frequency of every character to 0 .
+	}	
+		
 
-	int count_ch = 0, flag = 0;
+	int count_ch = 0;
 	while(read(fd, &c, 1))	{
 		count_ch++;
-		for(i = 0; i < n; i++)	{
-			if(c == arr[i].c)	{
-				arr[i].freq++;
-				flag = 1;
-				break; 
-			}
-		}
-		if(!flag)	{
-			arr[n].c = c;
-			arr[n].freq = 1;
+		
+		farr[c]++;	// This line will increment frequency of character c , hashing is used
+	}
+	
+	
+	// below for loop is to copy different characters from farr  to structure which stores frequency 
+	
+	for( i=0;i<256;i++){
+		// If farr[i] is not 0 that means character i is present in text file 
+		// so we will set arr[n].c=i and frequency of i will be farr[i]
+		// therefore we set frequency of c i.e arr[n].freq =farr[i] 
+		
+		if(farr[i]!=0){
+			arr[n].c=i;
+			arr[n].freq=farr[i];
 			n++;
 		}
-		flag = 0;
 	}
+	
 	arr[n].freq = INT_MAX;
 	
 	sort_struct(arr, n);
